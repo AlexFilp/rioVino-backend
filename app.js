@@ -13,7 +13,7 @@ app.use(logger(formatsLogger));
 app.use(cors());
 app.use(express.json());
 
-app.use("/vines", vinesRouter);
+app.use("/catalog", vinesRouter);
 app.use("/auth", authRouter);
 
 app.use((req, res) => {

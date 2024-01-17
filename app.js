@@ -2,7 +2,7 @@ const express = require("express");
 const logger = require("morgan");
 const cors = require("cors");
 
-const vinesRouter = require("./routes/vinesRouter");
+const productsRouter = require("./routes/productsRouter");
 const authRouter = require("./routes/authRouter");
 
 const app = express();
@@ -13,7 +13,7 @@ app.use(logger(formatsLogger));
 app.use(cors());
 app.use(express.json());
 
-app.use("/catalog", vinesRouter);
+app.use("/products", productsRouter);
 app.use("/auth", authRouter);
 
 app.use((req, res) => {

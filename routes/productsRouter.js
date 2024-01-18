@@ -1,9 +1,14 @@
 const express = require("express");
+const { getProducts } = require("../controllers/productControllers");
+
+const { validateBody } = require("../utils");
+const {
+  productsValidationSchema,
+  updateProjectValidationSchema,
+} = require("../schemas/productsSchemas");
 
 const router = express.Router();
 
-router.get("/", (req, res, next) => {
-  res.status(200).json({ message: "get catalog" });
-});
+router.route("/").get(getProducts);
 
 module.exports = router;

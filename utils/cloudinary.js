@@ -16,7 +16,7 @@ cloudinary.config({
 
 const upload = async (tempPath) => {
   const fileData = await cloudinary.uploader.upload(tempPath, {
-    folder: "riovino-productImages",
+    folder: "riovino",
     format: "webp",
   });
 

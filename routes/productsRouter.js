@@ -1,5 +1,9 @@
 const express = require("express");
-const { getProducts } = require("../controllers/productControllers");
+const {
+  getProducts,
+  addProduct,
+  updateProduct,
+} = require("../controllers/productControllers");
 
 const { validateBody } = require("../utils");
 const {
@@ -9,6 +13,13 @@ const {
 
 const router = express.Router();
 
-router.route("/").get(getProducts);
+router
+  .route("/")
+  .get(getProducts)
+  .post(validateBody(productsValidationSchema), addProduct);
+
+router
+  .route("/:id")
+  .patch(validateBody(updateProjectValidationSchema), updateProduct);
 
 module.exports = router;

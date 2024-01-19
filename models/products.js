@@ -25,7 +25,7 @@ const schema = new Schema(
     },
     discount: {
       type: String,
-      default: "0%",
+      default: "0",
     },
     capacity: {
       type: String,

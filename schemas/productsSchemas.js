@@ -1,11 +1,14 @@
 const Joi = require("joi");
 
 const productsValidationSchema = Joi.object({
-  name: Joi.string().required().messages({
-    "any.required": "Please provide a name for the product.",
+  title: Joi.string().required().messages({
+    "any.required": "Please provide a title for the product.",
   }),
   type: Joi.string().required().messages({
     "any.required": "Please specify the type of the product.",
+  }),
+  subType: Joi.string().required().messages({
+    "any.required": "Please specify the subType of the product.",
   }),
   alcohol: Joi.string().required().messages({
     "any.required": "Please provide the alcohol content of the product.",
@@ -13,7 +16,6 @@ const productsValidationSchema = Joi.object({
   price: Joi.string().required().messages({
     "any.required": "Please specify the price of the product.",
   }),
-  sale: Joi.boolean(),
   discount: Joi.string(),
   capacity: Joi.string().required().messages({
     "any.required": "Please specify the capacity of the product.",
@@ -22,11 +24,11 @@ const productsValidationSchema = Joi.object({
 });
 
 const updateProjectValidationSchema = Joi.object({
-  name: Joi.string(),
+  title: Joi.string(),
   type: Joi.string(),
+  subType: Joi.string(),
   alcohol: Joi.string(),
   price: Joi.string(),
-  sale: Joi.boolean(),
   discount: Joi.string(),
   capacity: Joi.string(),
   iva: Joi.boolean(),

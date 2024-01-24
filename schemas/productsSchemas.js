@@ -32,7 +32,7 @@ const updateProjectValidationSchema = Joi.object({
   discount: Joi.string(),
   capacity: Joi.string(),
   iva: Joi.boolean(),
-}).min(1);
+});
 
 module.exports = {
   productsValidationSchema,

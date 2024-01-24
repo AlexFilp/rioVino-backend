@@ -14,7 +14,7 @@ cloudinary.config({
 //   .upload(image)
 //   .then((result) => console.log("result", result));
 
-const upload = async (tempPath) => {
+const uploadToCloudinary = async (tempPath) => {
   const fileData = await cloudinary.uploader.upload(tempPath, {
     folder: "riovino",
     format: "webp",
@@ -24,5 +24,5 @@ const upload = async (tempPath) => {
 };
 
 module.exports = {
-  upload,
+  uploadToCloudinary,
 };

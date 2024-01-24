@@ -1,4 +1,9 @@
-const { HttpError, controllerWrapper } = require("../utils");
+const {
+  HttpError,
+  controllerWrapper,
+  uploadToCloudinary,
+} = require("../utils");
+const fs = require("fs/promises");
 const Product = require("../models/products");
 
 const getProducts = controllerWrapper(async (req, res) => {
@@ -7,7 +12,19 @@ const getProducts = controllerWrapper(async (req, res) => {
 });
 
 const addProduct = controllerWrapper(async (req, res) => {
-  const newProduct = await Product.create(req.body);
+  let imageURL;
+  let imageID;
+
+  if (req.file) {
+    const { path: tempUpload } = req.file;
+    const fileData = await uploadToCloudinary(tempUpload);
+
+    imageURL = fileData.url;
+    imageID = fileData.public_id;
+
+    await fs.unlink(tempUpload);
+  }
+  const newProduct = await Product.create({ ...req.body, imageURL, imageID });
 
   res.status(201).json(newProduct);
 });

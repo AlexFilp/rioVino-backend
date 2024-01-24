@@ -10,16 +10,25 @@ const {
   productsValidationSchema,
   updateProjectValidationSchema,
 } = require("../schemas/productsSchemas");
+const { upload } = require("../middlewares");
 
 const router = express.Router();
 
 router
   .route("/")
   .get(getProducts)
-  .post(validateBody(productsValidationSchema), addProduct);
+  .post(
+    upload.single("image"),
+    validateBody(productsValidationSchema),
+    addProduct
+  );
 
 router
   .route("/:id")
-  .patch(validateBody(updateProjectValidationSchema), updateProduct);
+  .patch(
+    upload.single("image"),
+    validateBody(updateProjectValidationSchema),
+    updateProduct
+  );
 
 module.exports = router;

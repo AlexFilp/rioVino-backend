@@ -3,6 +3,7 @@ const {
   getProducts,
   addProduct,
   updateProduct,
+  deleteProduct,
 } = require("../controllers/productControllers");
 
 const { validateBody } = require("../utils");
@@ -10,7 +11,7 @@ const {
   productsValidationSchema,
   updateProjectValidationSchema,
 } = require("../schemas/productsSchemas");
-const { upload } = require("../middlewares");
+const { upload, isValidId } = require("../middlewares");
 
 const router = express.Router();
 
@@ -26,9 +27,11 @@ router
 router
   .route("/:id")
   .patch(
+    isValidId,
     upload.single("image"),
     validateBody(updateProjectValidationSchema),
     updateProduct
-  );
+  )
+  .delete(isValidId, deleteProduct);
 
 module.exports = router;

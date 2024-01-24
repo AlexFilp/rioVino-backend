@@ -23,6 +23,11 @@ const uploadToCloudinary = async (tempPath) => {
   return fileData;
 };
 
+const removeFromCloudinary = async (fileID) => {
+  await cloudinary.uploader.destroy(fileID);
+};
+
 module.exports = {
   uploadToCloudinary,
+  removeFromCloudinary,
 };

@@ -5,6 +5,7 @@ const {
 } = require("../utils");
 const fs = require("fs/promises");
 const Product = require("../models/products");
+const { removeFromCloudinary } = require("../utils/cloudinary");
 
 const getProducts = controllerWrapper(async (req, res) => {
   const products = await Product.find();
@@ -31,21 +32,56 @@ const addProduct = controllerWrapper(async (req, res) => {
 
 const updateProduct = controllerWrapper(async (req, res) => {
   const { id } = req.params;
-  console.log(req.body);
-  console.log(req.file);
 
-  const updatedProduct = await Product.findByIdAndUpdate(id, req.body, {
-    new: true,
-  });
+  const productToUpdate = await Product.findOne({ _id: id });
 
-  if (!updatedProduct) {
+  if (!productToUpdate) {
     throw new HttpError(404, "Product not found");
   }
+
+  console.log("productToUpdate", productToUpdate);
+  let imageURL = productToUpdate.imageURL;
+  let imageID = productToUpdate.imageID;
+
+  if (req.file) {
+    const { path: tempUpload } = req.file;
+    const fileData = await uploadToCloudinary(tempUpload);
+    imageURL = fileData.url;
+    imageID = fileData.public_id;
+
+    await fs.unlink(tempUpload);
+
+    if (productToUpdate.imageID !== "") {
+      await removeFromCloudinary(productToUpdate.imageID);
+    }
+  }
+
+  const updatedProduct = await Product.findByIdAndUpdate(
+    { _id: id },
+    { ...req.body, imageID, imageURL },
+    {
+      new: true,
+    }
+  );
   res.status(200).json(updatedProduct);
+});
+
+const deleteProduct = controllerWrapper(async (req, res) => {
+  const { id } = req.params;
+
+  const productToDelete = await Product.findOneAndDelete({ _id: id });
+
+  if (!productToDelete) {
+    throw new HttpError(404, "Product not found");
+  }
+  console.log(productToDelete);
+  await removeFromCloudinary(productToDelete.imageID);
+  res.status(200).json({ message: `Product with id ${id} deleted` });
 });
 
 module.exports = {
   getProducts,
   addProduct,
   updateProduct,
+  deleteProduct,
 };

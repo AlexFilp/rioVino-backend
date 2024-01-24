@@ -4,6 +4,7 @@ const {
   addProduct,
   updateProduct,
   deleteProduct,
+  getProductById,
 } = require("../controllers/productControllers");
 
 const { validateBody } = require("../utils");
@@ -26,6 +27,7 @@ router
 
 router
   .route("/:id")
+  .get(isValidId, getProductById)
   .patch(
     isValidId,
     upload.single("image"),

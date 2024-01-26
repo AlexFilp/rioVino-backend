@@ -31,6 +31,10 @@ const schema = new Schema(
       type: String,
       required: true,
     },
+    region: {
+      type: String,
+      required: true,
+    },
     iva: {
       type: Boolean,
       default: true,

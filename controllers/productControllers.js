@@ -4,7 +4,7 @@ const {
   uploadToCloudinary,
 } = require("../utils");
 const fs = require("fs/promises");
-const Product = require("../models/products");
+const Product = require("../models/product");
 const { removeFromCloudinary } = require("../utils/cloudinary");
 
 const getProducts = controllerWrapper(async (req, res) => {
@@ -94,8 +94,9 @@ const deleteProduct = controllerWrapper(async (req, res) => {
   if (!productToDelete) {
     throw new HttpError(404, "Product not found");
   }
-  console.log(productToDelete);
-  await removeFromCloudinary(productToDelete.imageID);
+  if (productToDelete.imageID !== "") {
+    await removeFromCloudinary(productToDelete.imageID);
+  }
   res.status(200).json({ message: `Product with id ${id} deleted` });
 });
 

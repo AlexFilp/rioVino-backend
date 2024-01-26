@@ -20,6 +20,9 @@ const productsValidationSchema = Joi.object({
   capacity: Joi.string().required().messages({
     "any.required": "Please specify the capacity of the product.",
   }),
+  region: Joi.string().required().messages({
+    "any.required": "Please specify the region of the product.",
+  }),
   iva: Joi.boolean(),
 });
 
@@ -31,6 +34,7 @@ const updateProjectValidationSchema = Joi.object({
   price: Joi.string(),
   discount: Joi.string(),
   capacity: Joi.string(),
+  region: Joi.string(),
   iva: Joi.boolean(),
 });
 

@@ -8,7 +8,7 @@ const Product = require("../models/product");
 const { removeFromCloudinary } = require("../utils/cloudinary");
 
 const getProducts = controllerWrapper(async (req, res) => {
-  const { page = 1, limit = 20, subType } = req.query;
+  const { page, limit, subType } = req.query;
   const skip = (page - 1) * limit;
 
   const filter = {};

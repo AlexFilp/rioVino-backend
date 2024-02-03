@@ -5,6 +5,11 @@ const {
   updateProduct,
   deleteProduct,
   getProductById,
+  getTotalProductsCount,
+  getTotalProductsCountByType,
+  getTotalProductsVinosCountBySubType,
+  getTotalProductsEspumososCountBySubType,
+  getTotalProductsDestiladosCountBySubType,
 } = require("../controllers/productControllers");
 
 const { validateBody } = require("../utils");
@@ -24,6 +29,12 @@ router
     validateBody(productsValidationSchema),
     addProduct
   );
+
+router.route("/total").get(getTotalProductsCount);
+router.route("/total/types").get(getTotalProductsCountByType);
+router.route("/total/vinos").get(getTotalProductsVinosCountBySubType);
+router.route("/total/espumosos").get(getTotalProductsEspumososCountBySubType);
+router.route("/total/destilados").get(getTotalProductsDestiladosCountBySubType);
 
 router
   .route("/:id")

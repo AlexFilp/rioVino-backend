@@ -6,23 +6,73 @@ const {
 const fs = require("fs/promises");
 const Product = require("../models/product");
 const { removeFromCloudinary } = require("../utils/cloudinary");
+const {
+  getTypes,
+  getVinosTypes,
+  getEspumososTypes,
+  getDestiladosTypes,
+} = require("../services/productsServices");
 
 const getProducts = controllerWrapper(async (req, res) => {
-  const { page, limit, subType } = req.query;
+  const { page = 1, limit = 20, subType } = req.query;
   const skip = (page - 1) * limit;
+
+  let totalProducts = 0;
 
   const filter = {};
 
   if (subType) {
     filter.subType = subType;
+    totalProducts = await Product.countDocuments({ subType });
+  } else {
+    totalProducts = await Product.countDocuments({});
   }
 
   const products = await Product.find(filter, "-createdAt -updatedAt", {
     skip,
     limit,
   });
-  res.status(201).json(products);
+  res.status(201).json({ products, totalProducts });
 });
+
+const getTotalProductsCount = controllerWrapper(async (req, res) => {
+  const totalProducts = await Product.countDocuments({});
+
+  res.status(201).json({ totalProducts });
+});
+
+const getTotalProductsCountByType = controllerWrapper(async (req, res) => {
+  const types = await getTypes();
+  // const vinosTypes = await getVinosTypes();
+  // const espumososTypes = await getEspumososTypes();
+  // const destiladosTypes = await getDestiladosTypes();
+
+  res.status(201).json(types);
+});
+
+const getTotalProductsVinosCountBySubType = controllerWrapper(
+  async (req, res) => {
+    const vinosTypes = await getVinosTypes();
+
+    res.status(201).json(vinosTypes);
+  }
+);
+
+const getTotalProductsEspumososCountBySubType = controllerWrapper(
+  async (req, res) => {
+    const espumososTypes = await getEspumososTypes();
+
+    res.status(201).json(espumososTypes);
+  }
+);
+
+const getTotalProductsDestiladosCountBySubType = controllerWrapper(
+  async (req, res) => {
+    const destiladosTypes = await getDestiladosTypes();
+
+    res.status(201).json(destiladosTypes);
+  }
+);
 
 const getProductById = controllerWrapper(async (req, res) => {
   const { id } = req.params;
@@ -109,6 +159,11 @@ const deleteProduct = controllerWrapper(async (req, res) => {
 
 module.exports = {
   getProducts,
+  getTotalProductsCount,
+  getTotalProductsCountByType,
+  getTotalProductsVinosCountBySubType,
+  getTotalProductsEspumososCountBySubType,
+  getTotalProductsDestiladosCountBySubType,
   getProductById,
   addProduct,
   updateProduct,

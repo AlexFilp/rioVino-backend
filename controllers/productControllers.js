@@ -35,45 +35,6 @@ const getProducts = controllerWrapper(async (req, res) => {
   res.status(201).json({ products, totalProducts });
 });
 
-const getTotalProductsCount = controllerWrapper(async (req, res) => {
-  const totalProducts = await Product.countDocuments({});
-
-  res.status(201).json({ totalProducts });
-});
-
-const getTotalProductsCountByType = controllerWrapper(async (req, res) => {
-  const types = await getTypes();
-  // const vinosTypes = await getVinosTypes();
-  // const espumososTypes = await getEspumososTypes();
-  // const destiladosTypes = await getDestiladosTypes();
-
-  res.status(201).json(types);
-});
-
-const getTotalProductsVinosCountBySubType = controllerWrapper(
-  async (req, res) => {
-    const vinosTypes = await getVinosTypes();
-
-    res.status(201).json(vinosTypes);
-  }
-);
-
-const getTotalProductsEspumososCountBySubType = controllerWrapper(
-  async (req, res) => {
-    const espumososTypes = await getEspumososTypes();
-
-    res.status(201).json(espumososTypes);
-  }
-);
-
-const getTotalProductsDestiladosCountBySubType = controllerWrapper(
-  async (req, res) => {
-    const destiladosTypes = await getDestiladosTypes();
-
-    res.status(201).json(destiladosTypes);
-  }
-);
-
 const getProductById = controllerWrapper(async (req, res) => {
   const { id } = req.params;
 
@@ -156,6 +117,42 @@ const deleteProduct = controllerWrapper(async (req, res) => {
   }
   res.status(200).json({ message: `Product with id ${id} deleted` });
 });
+
+const getTotalProductsCount = controllerWrapper(async (req, res) => {
+  const totalProducts = await Product.countDocuments({});
+
+  res.status(201).json({ totalProducts });
+});
+
+const getTotalProductsCountByType = controllerWrapper(async (req, res) => {
+  const types = await getTypes();
+
+  res.status(201).json(types);
+});
+
+const getTotalProductsVinosCountBySubType = controllerWrapper(
+  async (req, res) => {
+    const vinosTypes = await getVinosTypes();
+
+    res.status(201).json(vinosTypes);
+  }
+);
+
+const getTotalProductsEspumososCountBySubType = controllerWrapper(
+  async (req, res) => {
+    const espumososTypes = await getEspumososTypes();
+
+    res.status(201).json(espumososTypes);
+  }
+);
+
+const getTotalProductsDestiladosCountBySubType = controllerWrapper(
+  async (req, res) => {
+    const destiladosTypes = await getDestiladosTypes();
+
+    res.status(201).json(destiladosTypes);
+  }
+);
 
 module.exports = {
   getProducts,

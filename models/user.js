@@ -16,7 +16,7 @@ const schema = new Schema(
       minLength: 6,
       required: [true, "Password is required"],
     },
-    name: {
+    firstname: {
       type: String,
       default: "",
     },
@@ -27,6 +27,9 @@ const schema = new Schema(
     userType: {
       type: String,
       default: "user",
+    },
+    cart: {
+      type: Array,
     },
     refreshToken: {
       type: String,

@@ -1,7 +1,6 @@
 const bcrypt = require("bcryptjs");
-const jwt = require("jsonwebtoken");
 const User = require("../models/user");
-const { HttpError, controllerWrapper } = require("../utils");
+const { HttpError, controllerWrapper, asignTokens } = require("../utils");
 
 const register = controllerWrapper(async (req, res) => {
   const { email, password } = req.body;
@@ -23,6 +22,34 @@ const register = controllerWrapper(async (req, res) => {
   res.status(201).json({ user: newUser });
 });
 
+const login = controllerWrapper(async (req, res) => {
+  const { email, password } = req.body;
+  const user = await User.findOne({ email });
+  if (!user) {
+    throw new HttpError(401, "Email or password invalid");
+  }
+  const isPasswordCorrect = await bcrypt.compare(password, user.password);
+  if (!isPasswordCorrect) {
+    throw new HttpError(401, "Email or password invalid");
+  }
+
+  const { accessToken, refreshToken } = asignTokens(user);
+
+  await User.findByIdAndUpdate(user._id, { refreshToken });
+
+  res.json({
+    accessToken,
+    user: {
+      email: user.email,
+      firstname: user.firstname,
+      surname: user.surname,
+      userType: user.userType,
+      cart: user.cart,
+    },
+  });
+});
+
 module.exports = {
   register,
+  login,
 };

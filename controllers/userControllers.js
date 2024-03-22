@@ -49,7 +49,20 @@ const login = controllerWrapper(async (req, res) => {
   });
 });
 
+const getCurrent = controllerWrapper(async (req, res) => {
+  const { email, firstname, surname, userType, cart } = req.user;
+  res.json({ user: { email, firstname, surname, userType, cart } });
+});
+
+const logout = controllerWrapper(async (req, res) => {
+  const { _id } = req.user;
+  await User.findByIdAndUpdate(_id, { refreshToken: null });
+  res.status(200).json({ message: "logout successfull" });
+});
+
 module.exports = {
   register,
   login,
+  getCurrent,
+  logout,
 };

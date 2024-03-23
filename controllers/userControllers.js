@@ -14,12 +14,28 @@ const register = controllerWrapper(async (req, res) => {
   const hashedPass = await bcrypt.hash(password, 10);
 
   const userToCreate = await User.create({ ...req.body, password: hashedPass });
-  const newUser = userToCreate.toObject();
-  delete newUser.password;
-  delete newUser.createdAt;
-  delete newUser.updatedAt;
 
-  res.status(201).json({ user: newUser });
+  const { accessToken, refreshToken } = asignTokens(userToCreate);
+
+  const newUser = await User.findByIdAndUpdate(
+    userToCreate._id,
+    { refreshToken },
+    {
+      new: true,
+      select: "-createdAt -updatedAt  -password -refreshToken",
+    }
+  );
+
+  res.status(201).json({
+    accessToken,
+    user: {
+      email: newUser.email,
+      firstname: newUser.firstname,
+      surname: newUser.surname,
+      userType: newUser.userType,
+      cart: newUser.cart,
+    },
+  });
 });
 
 const login = controllerWrapper(async (req, res) => {

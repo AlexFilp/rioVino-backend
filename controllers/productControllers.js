@@ -32,7 +32,7 @@ const getProducts = controllerWrapper(async (req, res) => {
     skip,
     limit,
   });
-  res.status(201).json({ products, totalProducts });
+  res.status(201).json({ products, totalProducts, subType: subType ?? null });
 });
 
 const getProductById = controllerWrapper(async (req, res) => {

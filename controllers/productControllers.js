@@ -28,11 +28,15 @@ const getProducts = controllerWrapper(async (req, res) => {
     totalProducts = await Product.countDocuments({});
   }
 
+  const upperSubType = subType.charAt(0).toUpperCase() + subType.slice(1);
+
   const products = await Product.find(filter, "-createdAt -updatedAt", {
     skip,
     limit,
   });
-  res.status(201).json({ products, totalProducts, subType: subType ?? null });
+  res
+    .status(201)
+    .json({ products, totalProducts, subType: upperSubType ?? null });
 });
 
 const getProductById = controllerWrapper(async (req, res) => {

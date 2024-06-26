@@ -21,22 +21,21 @@ const getProducts = controllerWrapper(async (req, res) => {
 
   const filter = {};
 
+  let upperSubType = null;
+
   if (subType) {
     filter.subType = subType;
+    upperSubType = subType.charAt(0).toUpperCase() + subType.slice(1);
     totalProducts = await Product.countDocuments({ subType });
   } else {
     totalProducts = await Product.countDocuments({});
   }
 
-  const upperSubType = subType.charAt(0).toUpperCase() + subType.slice(1);
-
   const products = await Product.find(filter, "-createdAt -updatedAt", {
     skip,
     limit,
   });
-  res
-    .status(201)
-    .json({ products, totalProducts, subType: upperSubType ?? null });
+  res.status(201).json({ products, totalProducts, subType: upperSubType });
 });
 
 const getProductById = controllerWrapper(async (req, res) => {

@@ -1,5 +1,6 @@
 const { Schema, model } = require("mongoose");
 const { handleMongooseSchemaErr } = require("../utils");
+const { required } = require("joi");
 
 const schema = new Schema(
   {
@@ -33,6 +34,10 @@ const schema = new Schema(
     },
     region: {
       type: String,
+      required: true,
+    },
+    critics: {
+      type: Array,
       required: true,
     },
     iva: {

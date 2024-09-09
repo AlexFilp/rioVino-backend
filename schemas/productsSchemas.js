@@ -23,7 +23,7 @@ const productsValidationSchema = Joi.object({
   region: Joi.string().required().messages({
     "any.required": "Please specify the region of the product.",
   }),
-  critics: Joi.array().required(),
+  critics: Joi.array(),
   iva: Joi.boolean(),
 });
 

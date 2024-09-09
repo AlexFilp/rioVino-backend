@@ -38,7 +38,7 @@ const schema = new Schema(
     },
     critics: {
       type: Array,
-      required: true,
+      default: []
     },
     iva: {
       type: Boolean,

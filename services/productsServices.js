@@ -11,83 +11,93 @@ const getTypes = async () => {
 };
 
 const getVinosTypes = async () => {
-  const totalTinto = await Product.countDocuments({ subType: "tinto" });
-  const totalBlanco = await Product.countDocuments({ subType: "blanco" });
-  const totalRosado = await Product.countDocuments({ subType: "rosado" });
-  const totalGeneroso = await Product.countDocuments({
-    subType: "generoso",
+  const totalTintos = await Product.countDocuments({ subType: "vinos-tintos" });
+  const totalBlancos = await Product.countDocuments({
+    subType: "vinos-blancos",
   });
-  const totalDulce = await Product.countDocuments({ subType: "dulce" });
-  const totalNaranja = await Product.countDocuments({ subType: "naranja" });
-  const totalVermut = await Product.countDocuments({ subType: "vermut" });
+  const totalRosados = await Product.countDocuments({
+    subType: "vinos-rosados",
+  });
+  const totalGenerosos = await Product.countDocuments({
+    subType: "vinos-generosos",
+  });
+  const totalDulces = await Product.countDocuments({ subType: "vinos-dulces" });
+  const totalNaranjas = await Product.countDocuments({
+    subType: "vinos-naranjas",
+  });
+  const totalVermuts = await Product.countDocuments({
+    subType: "vinos-vermuts",
+  });
 
   return {
-    totalTinto,
-    totalBlanco,
-    totalRosado,
-    totalGeneroso,
-    totalDulce,
-    totalNaranja,
-    totalVermut,
+    totalTintos,
+    totalBlancos,
+    totalRosados,
+    totalGenerosos,
+    totalDulces,
+    totalNaranjas,
+    totalVermuts,
   };
 };
 
 const getEspumososTypes = async () => {
-  const totalChampagne = await Product.countDocuments({
-    subType: "champagne",
+  const totalChampagnes = await Product.countDocuments({
+    subType: "champagnes",
   });
-  const totalCava = await Product.countDocuments({ subType: "cava" });
-  const totalCorpinnat = await Product.countDocuments({
-    subType: "corpinnat",
+  const totalCavas = await Product.countDocuments({ subType: "cavas" });
+  const totalCorpinnats = await Product.countDocuments({
+    subType: "corpinnats",
   });
-  const totalProsecco = await Product.countDocuments({ subType: "prosecco" });
+  const totalProseccos = await Product.countDocuments({ subType: "proseccos" });
   const totalOtrosEspumosos = await Product.countDocuments({
-    subType: "otrosEspumosos",
+    subType: "otros-espumosos",
   });
 
   return {
-    totalChampagne,
-    totalCava,
-    totalCorpinnat,
-    totalProsecco,
+    totalChampagnes,
+    totalCavas,
+    totalCorpinnats,
+    totalProseccos,
     totalOtrosEspumosos,
   };
 };
 
 const getDestiladosTypes = async () => {
-  const totalRon = await Product.countDocuments({ subType: "ron" });
-  const totalGinebra = await Product.countDocuments({ subType: "ginebra" });
-  const totalWhisky = await Product.countDocuments({ subType: "whisky" });
-  const totalVodka = await Product.countDocuments({ subType: "vodka" });
-  const totalCognac = await Product.countDocuments({ subType: "cognac" });
-  const totalBrandy = await Product.countDocuments({ subType: "brandy" });
+  const totalRones = await Product.countDocuments({ subType: "rones" });
+  const totalGinebras = await Product.countDocuments({ subType: "ginebras" });
+  const totalWhiskys = await Product.countDocuments({ subType: "whiskys" });
+  const totalVodkas = await Product.countDocuments({ subType: "vodkas" });
+  const totalCognacs = await Product.countDocuments({ subType: "cognacs" });
+  const totalBrandys = await Product.countDocuments({ subType: "brandys" });
   const totalPastis = await Product.countDocuments({ subType: "pastis" });
-  const totalTequilaYMezcal = await Product.countDocuments({
-    subType: "tequilaYMezcal",
+  const totalTequilasYMezcales = await Product.countDocuments({
+    subType: "tequilas-y-mezcales",
   });
-  const totalGrappaYAguardiente = await Product.countDocuments({
-    subType: "grappaYAguardiente",
+  const totalGrappasYAguardientes = await Product.countDocuments({
+    subType: "grappas-y-aguardientes",
   });
   const totalCalvados = await Product.countDocuments({ subType: "calvados" });
   const totalLicores = await Product.countDocuments({ subType: "licores" });
-  const totalPacharan = await Product.countDocuments({ subType: "pacharan" });
+  const totalPacharanes = await Product.countDocuments({
+    subType: "pacharanes",
+  });
   const totalAperitivos = await Product.countDocuments({
     subType: "aperitivos",
   });
 
   return {
-    totalRon,
-    totalGinebra,
-    totalWhisky,
-    totalVodka,
-    totalCognac,
-    totalBrandy,
+    totalRones,
+    totalGinebras,
+    totalWhiskys,
+    totalVodkas,
+    totalCognacs,
+    totalBrandys,
     totalPastis,
-    totalTequilaYMezcal,
-    totalGrappaYAguardiente,
+    totalTequilasYMezcales,
+    totalGrappasYAguardientes,
     totalCalvados,
     totalLicores,
-    totalPacharan,
+    totalPacharanes,
     totalAperitivos,
   };
 };

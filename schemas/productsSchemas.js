@@ -36,7 +36,7 @@ const updateProjectValidationSchema = Joi.object({
   discount: Joi.string(),
   capacity: Joi.string(),
   region: Joi.string(),
-  critics: Joi.array().required(),
+  critics: Joi.array(),
   iva: Joi.boolean(),
 });
 

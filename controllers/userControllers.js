@@ -19,7 +19,7 @@ const register = controllerWrapper(async (req, res) => {
 
   const newUser = await User.findByIdAndUpdate(
     userToCreate._id,
-    { refreshToken },
+    { refreshToken, accessToken },
     {
       new: true,
       select: "-createdAt -updatedAt  -password -refreshToken",
@@ -51,7 +51,7 @@ const login = controllerWrapper(async (req, res) => {
 
   const { accessToken, refreshToken } = asignTokens(user);
 
-  await User.findByIdAndUpdate(user._id, { refreshToken });
+  await User.findByIdAndUpdate(user._id, { refreshToken, accessToken });
 
   res.json({
     accessToken,
@@ -66,8 +66,12 @@ const login = controllerWrapper(async (req, res) => {
 });
 
 const getCurrent = controllerWrapper(async (req, res) => {
-  const { email, firstname, surname, userType, cart } = req.user;
-  res.json({ user: { email, firstname, surname, userType, cart } });
+  const { email, firstname, surname, userType, cart, accessToken } = req.user;
+  console.log("req.user", req.user);
+  res.json({
+    accessToken,
+    user: { email, firstname, surname, userType, cart },
+  });
 });
 
 const logout = controllerWrapper(async (req, res) => {

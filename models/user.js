@@ -16,7 +16,7 @@ const schema = new Schema(
       minLength: 6,
       required: [true, "Password is required"],
     },
-    firstname: {
+    name: {
       type: String,
       default: "",
     },

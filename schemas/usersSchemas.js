@@ -6,6 +6,13 @@ const registerSchema = Joi.object({
     "string.pattern.base": "Incorrect type of email",
     "string.empty": "Email is not allowed to be empty",
   }),
+  name: Joi.string().min(2).max(10).required().messages({
+    "any.required": "Name is a required field",
+    "string.min": "Name must be at least 2 characters long",
+    "string.max": "Name must be at most 10 characters long",
+    "string.empty": "Name is not allowed to be empty",
+    "string.pattern.base": "Incorrect type of name",
+  }),
   password: Joi.string().min(6).required().messages({
     "any.required": "Password is a required field",
     "string.min": "Password length must be at least {{#limit}} characters long",

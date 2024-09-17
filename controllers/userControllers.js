@@ -30,7 +30,7 @@ const register = controllerWrapper(async (req, res) => {
     accessToken,
     user: {
       email: newUser.email,
-      firstname: newUser.firstname,
+      name: newUser.name,
       surname: newUser.surname,
       userType: newUser.userType,
       cart: newUser.cart,
@@ -57,7 +57,7 @@ const login = controllerWrapper(async (req, res) => {
     accessToken,
     user: {
       email: user.email,
-      firstname: user.firstname,
+      name: user.name,
       surname: user.surname,
       userType: user.userType,
       cart: user.cart,
@@ -66,11 +66,11 @@ const login = controllerWrapper(async (req, res) => {
 });
 
 const getCurrent = controllerWrapper(async (req, res) => {
-  const { email, firstname, surname, userType, cart, accessToken } = req.user;
+  const { email, name, surname, userType, cart, accessToken } = req.user;
   console.log("req.user", req.user);
   res.json({
     accessToken,
-    user: { email, firstname, surname, userType, cart },
+    user: { email, name, surname, userType, cart },
   });
 });
 

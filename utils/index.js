@@ -2,7 +2,10 @@ const controllerWrapper = require("./controllerWrapper");
 const { HttpError } = require("./HttpError");
 const handleMongooseSchemaErr = require("./handleMongooseSchemaErr");
 const validateBody = require("./validateBody");
-const { uploadToCloudinary } = require("./cloudinary");
+const {
+  uploadProductImageToCloudinary,
+  removeProductImageFromCloudinary,
+} = require("./cloudinary");
 const asignTokens = require("./asignTokens");
 
 module.exports = {
@@ -10,6 +13,7 @@ module.exports = {
   HttpError,
   handleMongooseSchemaErr,
   validateBody,
-  uploadToCloudinary,
+  uploadProductImageToCloudinary,
+  removeProductImageFromCloudinary,
   asignTokens,
 };

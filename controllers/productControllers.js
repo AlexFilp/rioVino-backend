@@ -1,11 +1,11 @@
 const {
   HttpError,
   controllerWrapper,
-  uploadToCloudinary,
+  uploadProductImageToCloudinary,
+  removeProductImageFromCloudinary,
 } = require("../utils");
 const fs = require("fs/promises");
 const Product = require("../models/product");
-const { removeFromCloudinary } = require("../utils/cloudinary");
 const {
   getTypes,
   getVinosTypes,
@@ -58,7 +58,7 @@ const addProduct = controllerWrapper(async (req, res) => {
 
   if (req.file) {
     const { path: tempUpload } = req.file;
-    const fileData = await uploadToCloudinary(tempUpload);
+    const fileData = await uploadProductImageToCloudinary(tempUpload);
 
     imageURL = fileData.url;
     imageID = fileData.public_id;
@@ -85,14 +85,14 @@ const updateProduct = controllerWrapper(async (req, res) => {
 
   if (req.file) {
     const { path: tempUpload } = req.file;
-    const fileData = await uploadToCloudinary(tempUpload);
+    const fileData = await uploadProductImageToCloudinary(tempUpload);
     imageURL = fileData.url;
     imageID = fileData.public_id;
 
     await fs.unlink(tempUpload);
 
     if (productToUpdate.imageID !== "") {
-      await removeFromCloudinary(productToUpdate.imageID);
+      await removeProductImageFromCloudinary(productToUpdate.imageID);
     }
   }
 

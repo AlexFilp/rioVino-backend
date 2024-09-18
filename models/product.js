@@ -36,6 +36,18 @@ const schema = new Schema(
       type: String,
       required: true,
     },
+    year: {
+      type: String,
+      required: true,
+    },
+    shortDesc: {
+      type: String,
+      required: true,
+    },
+    fullDesc: {
+      type: String,
+      required: true,
+    },
     critics: {
       type: Array,
       default: [],

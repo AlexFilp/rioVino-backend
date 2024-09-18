@@ -14,7 +14,7 @@ cloudinary.config({
 //   .upload(image)
 //   .then((result) => console.log("result", result));
 
-const uploadToCloudinary = async (tempPath) => {
+const uploadProductImageToCloudinary = async (tempPath) => {
   const fileData = await cloudinary.uploader.upload(tempPath, {
     folder: "riovino",
     format: "webp",
@@ -23,11 +23,11 @@ const uploadToCloudinary = async (tempPath) => {
   return fileData;
 };
 
-const removeFromCloudinary = async (fileID) => {
+const removeProductImageFromCloudinary = async (fileID) => {
   await cloudinary.uploader.destroy(fileID);
 };
 
 module.exports = {
-  uploadToCloudinary,
-  removeFromCloudinary,
+  uploadProductImageToCloudinary,
+  removeProductImageFromCloudinary,
 };

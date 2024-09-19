@@ -26,7 +26,7 @@ const getVinosTypes = async () => {
     subType: "vinos-naranjas",
   });
   const totalVermuts = await Product.countDocuments({
-    subType: "vinos-vermuts",
+    subType: "vermuts",
   });
 
   return {

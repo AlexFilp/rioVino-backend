@@ -116,7 +116,7 @@ const deleteProduct = controllerWrapper(async (req, res) => {
     throw new HttpError(404, "Product not found");
   }
   if (productToDelete.imageID !== "") {
-    await removeFromCloudinary(productToDelete.imageID);
+    await removeProductImageFromCloudinary(productToDelete.imageID);
   }
   res.status(200).json({ message: `Product with id ${id} deleted` });
 });

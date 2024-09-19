@@ -23,13 +23,10 @@ const productsValidationSchema = Joi.object({
   region: Joi.string().required().messages({
     "any.required": "Please specify the region of the product.",
   }),
-  year: Joi.string().required().messages({
+  year: Joi.string().messages({
     "any.required": "Please write a year of the product.",
   }),
-  shortDesc: Joi.string().required().messages({
-    "any.required": "Please write a short description of the product.",
-  }),
-  fullDesc: Joi.string().required().messages({
+  description: Joi.string().messages({
     "any.required": "Please write a full description of the product.",
   }),
   critics: Joi.array(),
@@ -47,8 +44,7 @@ const updateProjectValidationSchema = Joi.object({
   region: Joi.string(),
   critics: Joi.array(),
   year: Joi.string(),
-  shortDesc: Joi.string(),
-  fullDesc: Joi.string(),
+  description: Joi.string(),
   iva: Joi.boolean(),
 });
 

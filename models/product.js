@@ -1,6 +1,5 @@
 const { Schema, model } = require("mongoose");
 const { handleMongooseSchemaErr } = require("../utils");
-const { required } = require("joi");
 
 const schema = new Schema(
   {
@@ -50,14 +49,18 @@ const schema = new Schema(
       type: Boolean,
       default: true,
     },
-    imageURL: {
-      type: String,
-      default: "",
+    productImages: {
+      type: [Object],
+      default: [],
     },
-    imageID: {
-      type: String,
-      default: "",
-    },
+    // imageURL: {
+    //   type: String,
+    //   default: "",
+    // },
+    // imageID: {
+    //   type: String,
+    //   default: "",
+    // },
   },
   { versionKey: false, timestamps: true }
 );

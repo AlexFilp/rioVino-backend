@@ -24,6 +24,7 @@ const uploadProductImageToCloudinary = async (tempPath) => {
 };
 
 const removeProductImageFromCloudinary = async (fileID) => {
+  console.log("removing file", fileID);
   await cloudinary.uploader.destroy(fileID);
 };
 

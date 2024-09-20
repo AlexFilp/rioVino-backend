@@ -25,7 +25,7 @@ router
   .route("/")
   .get(getProducts)
   .post(
-    upload.single("image"),
+    upload.array("images", 2),
     validateBody(productsValidationSchema),
     addProduct
   );
@@ -41,7 +41,7 @@ router
   .get(isValidId, getProductById)
   .patch(
     isValidId,
-    upload.single("image"),
+    upload.array("images", 2),
     validateBody(updateProjectValidationSchema),
     updateProduct
   )

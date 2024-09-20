@@ -53,19 +53,41 @@ const getProductById = controllerWrapper(async (req, res) => {
 });
 
 const addProduct = controllerWrapper(async (req, res) => {
-  let imageURL = "";
-  let imageID = "";
+  // if only 1 image
+  // let imageURL = "";
+  // let imageID = "";
 
-  if (req.file) {
-    const { path: tempUpload } = req.file;
-    const fileData = await uploadProductImageToCloudinary(tempUpload);
+  // if (req.file) {
+  // const { path: tempUpload } = req.file;
+  // const fileData = await uploadProductImageToCloudinary(tempUpload);
+  // imageURL = fileData.url;
+  // imageID = fileData.public_id;
+  // await fs.unlink(tempUpload);
+  // }
+  // const newProduct = await Product.create({ ...req.body, imageURL, imageID });
 
-    imageURL = fileData.url;
-    imageID = fileData.public_id;
+  let uploadedProductImages;
 
-    await fs.unlink(tempUpload);
+  if (req.files) {
+    uploadedProductImages = await Promise.all(
+      req.files.map(async (file) => {
+        const { path: tempUpload } = file;
+
+        const fileData = await uploadProductImageToCloudinary(tempUpload);
+
+        const imageURL = fileData.url;
+        const imageID = fileData.public_id;
+
+        await fs.unlink(tempUpload);
+
+        return { imageID, imageURL };
+      })
+    );
   }
-  const newProduct = await Product.create({ ...req.body, imageURL, imageID });
+  const newProduct = await Product.create({
+    ...req.body,
+    productImages: [...uploadedProductImages],
+  });
 
   res.status(201).json(newProduct);
 });
@@ -79,26 +101,48 @@ const updateProduct = controllerWrapper(async (req, res) => {
     throw new HttpError(404, "Product not found");
   }
 
-  console.log("productToUpdate", productToUpdate);
-  let imageURL = productToUpdate.imageURL;
-  let imageID = productToUpdate.imageID;
+  // let imageURL = productToUpdate.imageURL;
+  // let imageID = productToUpdate.imageID;
 
-  if (req.file) {
-    const { path: tempUpload } = req.file;
-    const fileData = await uploadProductImageToCloudinary(tempUpload);
-    imageURL = fileData.url;
-    imageID = fileData.public_id;
+  let uploadedProductImages;
 
-    await fs.unlink(tempUpload);
+  if (req.files) {
+    uploadedProductImages = await Promise.all(
+      req.files.map(async (file) => {
+        const { path: tempUpload } = file;
 
-    if (productToUpdate.imageID !== "") {
-      await removeProductImageFromCloudinary(productToUpdate.imageID);
+        const fileData = await uploadProductImageToCloudinary(tempUpload);
+
+        const imageURL = fileData.url;
+        const imageID = fileData.public_id;
+
+        await fs.unlink(tempUpload);
+
+        return { imageID, imageURL };
+      })
+    );
+
+    if (productToUpdate.productImages.length > 0) {
+      productToUpdate.productImages.map(async (image) => {
+        await removeProductImageFromCloudinary(image.imageID);
+      });
     }
+
+    // const { path: tempUpload } = req.file;
+    // const fileData = await uploadProductImageToCloudinary(tempUpload);
+    // imageURL = fileData.url;
+    // imageID = fileData.public_id;
+
+    // await fs.unlink(tempUpload);
+
+    // if (productToUpdate.imageID !== "") {
+    //   await removeProductImageFromCloudinary(productToUpdate.imageID);
+    // }
   }
 
   const updatedProduct = await Product.findByIdAndUpdate(
     { _id: id },
-    { ...req.body, imageID, imageURL },
+    { ...req.body, productImages: [...uploadedProductImages] },
 
     {
       new: true,
@@ -115,9 +159,16 @@ const deleteProduct = controllerWrapper(async (req, res) => {
   if (!productToDelete) {
     throw new HttpError(404, "Product not found");
   }
-  if (productToDelete.imageID !== "") {
-    await removeProductImageFromCloudinary(productToDelete.imageID);
+
+  if (productToDelete.productImages.length > 0) {
+    productToDelete.productImages.map(async (image) => {
+      await removeProductImageFromCloudinary(image.imageID);
+    });
   }
+
+  // if (productToDelete.imageID !== "") {
+  //   await removeProductImageFromCloudinary(productToDelete.imageID);
+  // }
   res.status(200).json({ message: `Product with id ${id} deleted` });
 });
 

@@ -68,7 +68,7 @@ const addProduct = controllerWrapper(async (req, res) => {
 
   let uploadedProductImages;
 
-  if (req.files) {
+  if (req.files && req.files.length > 0) {
     uploadedProductImages = await Promise.all(
       req.files.map(async (file) => {
         const { path: tempUpload } = file;
@@ -106,7 +106,7 @@ const updateProduct = controllerWrapper(async (req, res) => {
 
   let uploadedProductImages;
 
-  if (req.files) {
+  if (req.files && req.files.length > 0) {
     uploadedProductImages = await Promise.all(
       req.files.map(async (file) => {
         const { path: tempUpload } = file;

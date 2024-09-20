@@ -68,6 +68,8 @@ const addProduct = controllerWrapper(async (req, res) => {
 
   let uploadedProductImages;
 
+  console.log("req.files", req.files);
+
   if (req.files && req.files.length > 0) {
     uploadedProductImages = await Promise.all(
       req.files.map(async (file) => {
@@ -83,10 +85,16 @@ const addProduct = controllerWrapper(async (req, res) => {
         return { imageID, imageURL };
       })
     );
+
+    const newProduct = await Product.create({
+      ...req.body,
+      productImages: [...uploadedProductImages],
+    });
+
+    res.status(201).json(newProduct);
   }
   const newProduct = await Product.create({
     ...req.body,
-    productImages: [...uploadedProductImages],
   });
 
   res.status(201).json(newProduct);
@@ -128,6 +136,16 @@ const updateProduct = controllerWrapper(async (req, res) => {
       });
     }
 
+    const updatedProduct = await Product.findByIdAndUpdate(
+      { _id: id },
+      { ...req.body, productImages: [...uploadedProductImages] },
+
+      {
+        new: true,
+      }
+    );
+    res.status(200).json(updatedProduct);
+
     // const { path: tempUpload } = req.file;
     // const fileData = await uploadProductImageToCloudinary(tempUpload);
     // imageURL = fileData.url;
@@ -142,7 +160,7 @@ const updateProduct = controllerWrapper(async (req, res) => {
 
   const updatedProduct = await Product.findByIdAndUpdate(
     { _id: id },
-    { ...req.body, productImages: [...uploadedProductImages] },
+    { ...req.body },
 
     {
       new: true,

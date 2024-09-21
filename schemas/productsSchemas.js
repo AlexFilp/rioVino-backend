@@ -23,9 +23,7 @@ const productsValidationSchema = Joi.object({
   region: Joi.string().required().messages({
     "any.required": "Please specify the region of the product.",
   }),
-  year: Joi.string().messages({
-    "any.required": "Please write a year of the product.",
-  }),
+  year: Joi.string(),
   description: Joi.string().messages({
     "any.required": "Please write a full description of the product.",
   }),

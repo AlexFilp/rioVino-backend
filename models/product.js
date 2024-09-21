@@ -37,6 +37,7 @@ const schema = new Schema(
     },
     year: {
       type: String,
+      default: "",
     },
     description: {
       type: String,

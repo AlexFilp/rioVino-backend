@@ -92,12 +92,13 @@ const addProduct = controllerWrapper(async (req, res) => {
     });
 
     res.status(201).json(newProduct);
-  }
-  const newProduct = await Product.create({
-    ...req.body,
-  });
+  } else {
+    const newProduct = await Product.create({
+      ...req.body,
+    });
 
-  res.status(201).json(newProduct);
+    res.status(201).json(newProduct);
+  }
 });
 
 const updateProduct = controllerWrapper(async (req, res) => {
@@ -146,6 +147,7 @@ const updateProduct = controllerWrapper(async (req, res) => {
     );
     res.status(200).json(updatedProduct);
 
+    // if only 1 image
     // const { path: tempUpload } = req.file;
     // const fileData = await uploadProductImageToCloudinary(tempUpload);
     // imageURL = fileData.url;
@@ -156,17 +158,17 @@ const updateProduct = controllerWrapper(async (req, res) => {
     // if (productToUpdate.imageID !== "") {
     //   await removeProductImageFromCloudinary(productToUpdate.imageID);
     // }
+  } else {
+    const updatedProduct = await Product.findByIdAndUpdate(
+      { _id: id },
+      { ...req.body },
+
+      {
+        new: true,
+      }
+    );
+    res.status(200).json(updatedProduct);
   }
-
-  const updatedProduct = await Product.findByIdAndUpdate(
-    { _id: id },
-    { ...req.body },
-
-    {
-      new: true,
-    }
-  );
-  res.status(200).json(updatedProduct);
 });
 
 const deleteProduct = controllerWrapper(async (req, res) => {
@@ -184,9 +186,11 @@ const deleteProduct = controllerWrapper(async (req, res) => {
     });
   }
 
+  // if only 1 image
   // if (productToDelete.imageID !== "") {
   //   await removeProductImageFromCloudinary(productToDelete.imageID);
   // }
+
   res.status(200).json({ message: `Product with id ${id} deleted` });
 });
 

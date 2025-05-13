@@ -25,7 +25,7 @@ const holdedInstance = axios.create({
 });
 
 let lastImportTime = 0; // Stored outside the function
-const MIN_INTERVAL = 3600 * 1000; // 1 hour
+const MIN_INTERVAL = 60 * 1000; // 1 minute
 
 const getHoldedProducts = controllerWrapper(async (req, res) => {
   const now = Date.now();

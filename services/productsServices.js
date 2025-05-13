@@ -1,13 +1,17 @@
 const Product = require("../models/product");
 
 const getTypes = async () => {
-  const totalVinos = await Product.countDocuments({ type: "vinos" });
-  const totalEspumosos = await Product.countDocuments({ type: "espumosos" });
-  const totalDestilados = await Product.countDocuments({
-    type: "destilados",
+  const totalVinos = await Product.countDocuments({
+    tags: { $in: ["tinto", "blanco", "rosado"] },
   });
+  const totalEspumosos = await Product.countDocuments({ tags: "espumosos" });
+  const totalDestilados = await Product.countDocuments({ tags: "destilados" });
 
-  return { totalVinos, totalEspumosos, totalDestilados };
+  return {
+    totalVinos,
+    totalEspumosos,
+    totalDestilados,
+  };
 };
 
 const getVinosTypes = async () => {

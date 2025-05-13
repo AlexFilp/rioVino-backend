@@ -1,3 +1,4 @@
+const axios = require("axios");
 const {
   HttpError,
   controllerWrapper,
@@ -13,28 +14,83 @@ const {
   getDestiladosTypes,
 } = require("../services/productsServices");
 
+const { HOLDED_KEY } = process.env;
+
+const holdedInstance = axios.create({
+  baseURL: "https://api.holded.com/api/invoicing/v1",
+  headers: {
+    Accept: "application/json",
+    Key: HOLDED_KEY,
+  },
+});
+
+let lastImportTime = 0; // Stored outside the function
+const MIN_INTERVAL = 3600 * 1000; // 1 hour
+
+const getHoldedProducts = controllerWrapper(async (req, res) => {
+  const now = Date.now();
+
+  if (now - lastImportTime < MIN_INTERVAL) {
+    console.log("TIME");
+    return res.status(429).json({ message: "Please wait before trying again" });
+  }
+
+  const response = await holdedInstance.get("/products");
+  const holdedProducts = response.data;
+
+  if (!Array.isArray(holdedProducts)) {
+    console.error("Unexpected response:", holdedProducts);
+    return;
+  }
+
+  // let updatedCount = 0;
+
+  // for (const product of holdedProducts) {
+  //   const res = await Product.updateOne(
+  //     { id: product.id }, // Match by Holded product ID
+  //     { $set: product }, // Update with new data
+  //     { upsert: true } // Insert if not exists
+  //   );
+
+  //   if (res.modifiedCount > 0 || res.upsertedCount > 0) {
+  //     updatedCount++;
+  //   }
+  // }
+
+  await Product.deleteMany({}); // Delete all existing
+  await Product.insertMany(holdedProducts); // Insert fresh data
+
+  lastImportTime = now; // Update the time only on success
+
+  res.status(201).json({
+    message: `✅ Replaced all with ${holdedProducts.length} products from Holded`,
+  });
+});
+
 const getProducts = controllerWrapper(async (req, res) => {
   const { page = 1, limit = 20, subType } = req.query;
   const skip = (page - 1) * limit;
 
-  let totalProducts = 0;
+  console.log(subType);
 
+  let totalProducts = 0;
   const filter = {};
 
   let upperSubType = null;
 
   if (subType) {
-    filter.subType = subType;
+    filter.tags = { $in: [subType] }; // 🔁 Match tags that include the subType
     upperSubType = subType.charAt(0).toUpperCase() + subType.slice(1);
-    totalProducts = await Product.countDocuments({ subType });
+    totalProducts = await Product.countDocuments(filter);
   } else {
-    totalProducts = await Product.countDocuments({});
+    totalProducts = await Product.countDocuments();
   }
 
   const products = await Product.find(filter, "-createdAt -updatedAt", {
     skip,
     limit,
   });
+
   res.status(201).json({ products, totalProducts, subType: upperSubType });
 });
 
@@ -42,7 +98,7 @@ const getProductById = controllerWrapper(async (req, res) => {
   const { id } = req.params;
 
   const productById = await Product.findOne(
-    { _id: id },
+    { id: id },
     "-createdAt -updatedAt"
   );
 
@@ -241,4 +297,5 @@ module.exports = {
   addProduct,
   updateProduct,
   deleteProduct,
+  getHoldedProducts,
 };

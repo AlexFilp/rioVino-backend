@@ -10,6 +10,7 @@ const {
   getTotalProductsVinosCountBySubType,
   getTotalProductsEspumososCountBySubType,
   getTotalProductsDestiladosCountBySubType,
+  getHoldedProducts,
 } = require("../controllers/productControllers");
 
 const { validateBody } = require("../utils");
@@ -29,6 +30,8 @@ router
     validateBody(productsValidationSchema),
     addProduct
   );
+
+router.route("/holded").get(getHoldedProducts);
 
 router.route("/total").get(getTotalProductsCount);
 router.route("/total/types").get(getTotalProductsCountByType);

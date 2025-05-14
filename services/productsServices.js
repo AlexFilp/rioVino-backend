@@ -75,7 +75,7 @@ const getEspumososTypes = async () => {
   const totalCavas = await Product.countDocuments({ tags: "cava" });
   const totalCorpinnats = await Product.countDocuments({ tags: "corpinnat" });
   const totalProseccos = await Product.countDocuments({ tags: "prosecco" });
-  const totalOtrosEspumosos = await Product.countDocuments({
+  const totalEspumosos = await Product.countDocuments({
     tags: "espumoso",
   });
 
@@ -84,7 +84,7 @@ const getEspumososTypes = async () => {
     totalCavas,
     totalCorpinnats,
     totalProseccos,
-    totalOtrosEspumosos,
+    totalEspumosos,
   };
 };
 
@@ -97,12 +97,18 @@ const getDestiladosTypes = async () => {
   const totalBrandys = await Product.countDocuments({ tags: "brandy" });
   const totalPastis = await Product.countDocuments({ tags: "pastis" });
 
-  const totalTequilasYMezcales = await Product.countDocuments({
-    tags: { $in: ["tequila", "mezcal"] },
+  const totalTequilas = await Product.countDocuments({
+    tags: "tequila",
+  });
+  const totalMezcales = await Product.countDocuments({
+    tags: "mezcal",
   });
 
-  const totalGrappasYAguardientes = await Product.countDocuments({
-    tags: { $in: ["grappa", "aguardiente"] },
+  const totalGrappas = await Product.countDocuments({
+    tags: "grappa",
+  });
+  const totalAguardientes = await Product.countDocuments({
+    tags: "aguardiente",
   });
 
   const totalCalvados = await Product.countDocuments({ tags: "calvado" });
@@ -118,8 +124,10 @@ const getDestiladosTypes = async () => {
     totalCognacs,
     totalBrandys,
     totalPastis,
-    totalTequilasYMezcales,
-    totalGrappasYAguardientes,
+    totalTequilas,
+    totalMezcales,
+    totalGrappas,
+    totalAguardientes,
     totalCalvados,
     totalLicores,
     totalPacharanes,

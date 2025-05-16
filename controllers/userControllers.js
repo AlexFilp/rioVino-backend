@@ -121,7 +121,7 @@ const removeFromCart = controllerWrapper(async (req, res) => {
 
   await user.save();
 
-  res.status(200).json({ message: `Product with id: ${id} has been deleted` });
+  res.status(200).json(user.cart);
 });
 
 module.exports = {

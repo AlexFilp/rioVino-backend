@@ -102,7 +102,7 @@ const addToCart = controllerWrapper(async (req, res) => {
 
   await user.save();
 
-  res.status(200).json({ cart: user.cart });
+  res.status(200).json(user.cart);
 });
 
 const removeFromCart = controllerWrapper(async (req, res) => {
@@ -121,7 +121,7 @@ const removeFromCart = controllerWrapper(async (req, res) => {
 
   await user.save();
 
-  res.status(200).json({ cart: user.cart });
+  res.status(200).json({ message: `Product with id: ${id} has been deleted` });
 });
 
 module.exports = {

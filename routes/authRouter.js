@@ -6,8 +6,10 @@ const {
   login,
   getCurrent,
   logout,
+  addToCart,
+  removeFromCart,
 } = require("../controllers/userControllers");
-const { authenticate } = require("../middlewares");
+const { authenticate, isValidId } = require("../middlewares");
 
 const router = express.Router();
 
@@ -18,5 +20,9 @@ router.post("/login", validateBody(loginSchema), login);
 router.get("/current", authenticate, getCurrent);
 
 router.post("/logout", authenticate, logout);
+
+router.patch("/cart", authenticate, addToCart);
+
+router.delete("/cart/:id", authenticate, isValidId, removeFromCart);
 
 module.exports = router;

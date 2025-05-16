@@ -28,9 +28,21 @@ const schema = new Schema(
       type: String,
       default: "user",
     },
-    cart: {
-      type: Array,
-    },
+    cart: [
+      {
+        _id: false,
+        product: {
+          id: String,
+          name: String,
+          price: Number,
+          taxes: Number,
+        },
+        quantity: {
+          type: Number,
+          default: 1,
+        },
+      },
+    ],
     refreshToken: {
       type: String,
       default: null,

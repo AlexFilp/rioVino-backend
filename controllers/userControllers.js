@@ -80,9 +80,55 @@ const logout = controllerWrapper(async (req, res) => {
   res.status(200).json({ message: "logout successfull" });
 });
 
+const addToCart = controllerWrapper(async (req, res) => {
+  const { _id } = req.user;
+  const { product, quantity } = req.body;
+
+  const user = await User.findById(_id);
+
+  if (!user) {
+    throw HttpError(404, "User not found");
+  }
+
+  const existingProduct = user.cart.find(
+    (item) => item.product.id === product.id
+  );
+
+  if (existingProduct) {
+    existingProduct.quantity += quantity;
+  } else {
+    user.cart.push({ product, quantity });
+  }
+
+  await user.save();
+
+  res.status(200).json({ cart: user.cart });
+});
+
+const removeFromCart = controllerWrapper(async (req, res) => {
+  const { _id } = req.user;
+  const { id } = req.params;
+
+  console.log("id", id);
+
+  const user = await User.findById(_id);
+
+  if (!user) {
+    throw HttpError(404, "User not found");
+  }
+
+  user.cart = user.cart.filter((item) => item.product.id !== id);
+
+  await user.save();
+
+  res.status(200).json({ cart: user.cart });
+});
+
 module.exports = {
   register,
   login,
   getCurrent,
   logout,
+  addToCart,
+  removeFromCart,
 };

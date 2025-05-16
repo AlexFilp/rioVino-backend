@@ -105,6 +105,31 @@ const addToCart = controllerWrapper(async (req, res) => {
   res.status(200).json(user.cart);
 });
 
+const updateCartQuantity = controllerWrapper(async (req, res) => {
+  const { _id } = req.user;
+  const { id } = req.params;
+  const { quantity } = req.body;
+
+  if (!quantity || quantity < 1) {
+    return res.status(400).json({ message: "Quantity must be at least 1" });
+  }
+
+  const user = await User.findById(_id);
+
+  if (!user) {
+    throw HttpError(404, "User not found");
+  }
+
+  const cartItem = user.cart.find((item) => item.product.id === id);
+  console.log(cartItem);
+
+  cartItem.quantity = quantity;
+
+  await user.save();
+
+  res.status(200).json(user.cart);
+});
+
 const removeFromCart = controllerWrapper(async (req, res) => {
   const { _id } = req.user;
   const { id } = req.params;
@@ -130,5 +155,6 @@ module.exports = {
   getCurrent,
   logout,
   addToCart,
+  updateCartQuantity,
   removeFromCart,
 };

@@ -8,6 +8,7 @@ const {
   logout,
   addToCart,
   removeFromCart,
+  updateCartQuantity,
 } = require("../controllers/userControllers");
 const { authenticate, isValidId } = require("../middlewares");
 
@@ -22,6 +23,8 @@ router.get("/current", authenticate, getCurrent);
 router.post("/logout", authenticate, logout);
 
 router.patch("/cart", authenticate, addToCart);
+
+router.patch("/cart/:id", authenticate, updateCartQuantity);
 
 router.delete("/cart/:id", authenticate, removeFromCart);
 

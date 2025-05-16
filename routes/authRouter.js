@@ -23,6 +23,6 @@ router.post("/logout", authenticate, logout);
 
 router.patch("/cart", authenticate, addToCart);
 
-router.delete("/cart/:id", authenticate, isValidId, removeFromCart);
+router.delete("/cart/:id", authenticate, removeFromCart);
 
 module.exports = router;

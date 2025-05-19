@@ -35,7 +35,7 @@ const schema = new Schema(
           id: String,
           name: String,
           price: Number,
-          taxes: String,
+          taxes: [String],
         },
         quantity: {
           type: Number,
